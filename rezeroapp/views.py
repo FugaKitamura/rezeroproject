@@ -25,6 +25,16 @@ class RezeroDetail(DetailView):
   model = RezeroPost
   # 参考　＞＞　https://qiita.com/Yoshida-Programmer/items/7d021917b420743cb53f?utm_source=chatgpt.com 
   # コメントの設定
+  def get(self, request, *args, **kwargs):
+    pk = kwargs.get("pk")
+
+    # 投稿があるか
+    if not RezeroPost.objects.filter(pk=pk).exists():
+      return redirect("rezeroapp:index")
+
+    return super().get(request, *args, **kwargs)
+
+  # コメント機能
   def post(self, request, *args, **kwargs):
     self.object = self.get_object()
     text = request.POST.get('text', '').strip()
@@ -32,6 +42,7 @@ class RezeroDetail(DetailView):
       Comment.objects.create(post=self.object, text=text)
     context = self.get_context_data(object=self.object)
     return self.render_to_response(context)
+
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['post'] = self.object
