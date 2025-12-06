@@ -1,0 +1,69 @@
+<!-- このindex.thmlで親テンプレートbase.htmlを拡張する -->
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- base.htmlに設置したtitleブロックに文字列を送り込む -->
+{% block title %}リゼロ 考察 キャラクター{% endblock %}
+
+        <!-- Navigation-->
+
+        <!-- Page Header-->
+         {% block header %}
+        <header class="masthead" style="background-image: url({% static 'assets/img/y.png' %})">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading" style="color: black; text-shadow: 0px 0px 20px white;">
+                            <h3>CHARACTER</h3>
+                            <h1 style="font-size: 70px;">キャラクター</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        {% endblock %}
+
+        <!-- Main Content-->
+
+        {% block contents %}
+        <div class="container mt-4 d-flex justify-content-center">
+            <a href="{% url 'rezeroapp:post' %}" class="btn">
+                投稿する
+            </a>
+        </div>
+                <div style="border: 2px solid brown; margin: 30px 10px 0 10px;">
+            <p class="netabare">【ネタバレ注意】</p>
+            <p style="margin: 0 30px 30px 30px; color: brown;">以下の内容には、『Re:ゼロから始める異世界生活』原作（なろう版）最新話までの情報を含む考察が含まれています。未読の方は閲覧にご注意ください。</p>
+        </div>
+        
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    {% for record in character_records %}
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="{% url 'rezeroapp:rezero_detail' record.pk %}">
+                            <h2 class="post-title">{{record.title|truncatechars:25}}</h2>
+                            <h3 class="post-subtitle">
+                                <span style="font-size: 14pt;">
+                                    {{record.content|truncatechars:50}}
+                                </span>
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                            投稿：{{record.posted_at}}
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    {% endfor %}
+
+                    <!-- Pager-->
+                    {% include "pagination.html" %}
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+
+        <!-- Footer-->
+        

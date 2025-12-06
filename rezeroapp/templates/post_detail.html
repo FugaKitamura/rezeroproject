@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}リゼロ 考察 詳細{% endblock %}
+
+        <!-- Post Content-->
+        {% block contents %}
+        <article class="mb-4" style="margin-top: 100px;">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7" style="color: aliceblue;">
+                        <span class="meta">
+                            カテゴリー：{{object.get_category_display}}<br>
+                            投稿：{{object.posted_at}}
+                        </span>
+                        <h1>{{object.title}}</h1>
+                        <p style=" margin-top: 0; margin-bottom: 0;">{{object.content}}</p>
+
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <hr>
+        {% endblock %}
+
+        <!-- めちゃくちゃ参考 https://qiita.com/Yoshida-Programmer/items/7d021917b420743cb53f?utm_source=chatgpt.com -->
+        <!-- コメントをここに召喚 -->
+        {% block comment %}
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+
+                        <!-- コメント返信をかくとこ -->
+                        <h4 class="mt-4" style="color: aliceblue;">コメントを投稿</h4>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            <textarea name="text" placeholder="コメントを入力" style="width: 100%;"></textarea><br>
+                            <button type="submit" class="btn" style="margin: 10px 0 30px 5px;">投稿</button>
+                        </form>
+
+
+                        <!-- コメントを表示 -->
+                        <h3 style="color: white;">コメント</h3>
+                        {% for comment in comments %}
+                            <div class="border-top">
+                                <p style="margin-top: 10px; margin-bottom: 0; color: aliceblue;">{{ comment.text }}</p>
+                                <small style="color: aliceblue; font-size: 0.9rem;">{{ comment.posted_at }}</small>
+                            </div>
+                        {% empty %}
+                            <p>まだコメントはありません</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endblock %}
